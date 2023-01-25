@@ -36,6 +36,7 @@ public class Main {
         } finally {
             Thread.sleep(15000);
             driver.quit();
+
         }
     }
 }
