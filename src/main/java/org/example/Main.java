@@ -6,37 +6,40 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
         try {
-            driver.get("https://crossbrowsertesting.github.io/drag-and-drop.html");
+            driver.get("https://pagination.js.org/");
             Thread.sleep(2000);
 
-            WebElement element = driver.findElement(By.id("draggable"));
-            WebElement element2 = driver.findElement(By.id("droppable"));
+            List<WebElement> elements = driver.findElements(By.xpath("//div[@class='data-container']/ul/li"));
+            List<WebElement> pages = driver.findElements(By.xpath("//div[@class='paginationjs-pages']/ul/li"));
 
-            Actions actions = new Actions(driver);
-            /* Drag and Drop mechanism
-            actions
-                    .moveToElement(element)
-                    .clickAndHold()
-                    .moveToElement(element2)
-                    .release()
-                    .build()
-                    .perform();
-            */
-            actions.dragAndDrop(element, element2);
+            String text = elements.get(5).getText();
+            System.out.println(text); //check content of elements
+
+            pages.get(2).click(); //change page
+            wait.until(ExpectedConditions.stalenessOf(elements.get(5))); //wait until element content disappears
+            elements = driver.findElements(By.xpath("//div[@class='data-container']/ul/li")); //update elements list
+            text = elements.get(5).getText();
+            System.out.println(text); //check content of elements
 
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
-            Thread.sleep(15000);
             driver.quit();
-
         }
     }
 }
