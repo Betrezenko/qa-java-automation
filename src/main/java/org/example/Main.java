@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.List;
@@ -19,31 +20,12 @@ public class Main {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        JavascriptExecutor js = (JavascriptExecutor)driver;
-
         try {
             driver.get("http://127.0.0.1:5500/index.html");
             Thread.sleep(5000);
 
-            String window1 = driver.getWindowHandle(); // get active window id
-            js.executeScript("window.open()"); // use js to open new window
-
-            Set<String> currentWindows = driver.getWindowHandles(); // create opened windows array
-
-            String window2 = null; // create new window variable and set value to null for writing id
-
-            for (String window : currentWindows) {
-                if (!window.equals(window1)) {
-                    window2 = window;
-                    break;
-                }
-            }
-
-            driver.switchTo().window(window2);
-            driver.get("http://127.0.0.1:5500/index.html");
-            Thread.sleep(5000);
-            driver.close();
-            driver.switchTo().window(window1);
+            LoginPage lg = new LoginPage(); // new class example
+            lg.login("admin", "admin"); // login method from class LoginPage
 
         } catch (InterruptedException e) {
             e.printStackTrace();
