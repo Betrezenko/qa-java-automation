@@ -1,9 +1,9 @@
-package org.example;
+package smoke;
 
 import org.testng.annotations.Test;
 
 public class Test2 {
-    @Test
+    @Test (groups = {"smokeTest", "regress"})
     public void test2() {
         System.out.println("test 2");
     }
