@@ -6,18 +6,13 @@ import org.testng.annotations.Test;
 
 public class Test1 {
 
-    @DataProvider(name = "db")
-        public static Object[][] dbData() {
-        return new Object[][] {
-                {"SQL", new Integer(1)},
-                {"NoSQL", new Integer(2)}
-        };
+    @Test
+    public void test1() {
+        System.out.println("test 1 ");
     }
 
-    @Parameters({"db"})
-    @Test (dataProvider = "db")
-    public void test1(String e1, int e2) {
-        System.out.println("test 1 " + e1 + " " + e2);
+    @Test (dependsOnMethods = {"test1"}, alwaysRun = true)
+    public void test11() {
+        System.out.println("test 11 ");
     }
-
 }
